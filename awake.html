@@ -55,6 +55,10 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+        button:focus {
+    outline: none;
+    box-shadow: 0 0 3px #4cae4c;
+        }
     </style>
 </head>
 <body>
@@ -84,7 +88,7 @@
         // Function to render posts
         function renderPosts() {
             const postsSection = document.getElementById('postsSection');
-            postsSection.innerHTML = '<h2>게시물</h2>';
+            postsSection.innerHTML = '<h2>게시물 목</h2>';
             posts.forEach((post, index) => {
                 const postDiv = document.createElement('div');
                 postDiv.classList.add('post');
@@ -120,14 +124,21 @@
         });
 
         // Add new comment
-        function addComment(event, postIndex) {
-            event.preventDefault();
-            const comment = event.target.querySelector('input').value;
-            if (comment) {
-                posts[postIndex].comments.push(comment);
-                event.target.reset();
-                renderPosts();
-            }
+function addComment(event, postIndex) {
+    event.preventDefault();
+    const commentInput = event.target.querySelector('input');
+    const comment = commentInput.value;
+    if (comment) {
+        posts[postIndex].comments.push(comment);
+        commentInput.value = ''; 
+        renderComments(postIndex); 
+    }
+}
+function renderComments(postIndex) {
+    const commentList = document.getElementById(`comments${postIndex}`).querySelector('.comment-list');
+    commentList.innerHTML = posts[postIndex].comments.map(comment => `<div class="comment">${comment}</div>`).join('');
+}
+
         }
     </script>
 </body>
